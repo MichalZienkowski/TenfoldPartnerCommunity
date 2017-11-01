@@ -1,0 +1,9 @@
+
+<design:component>
+
+    <design:attribute name ="NameOfFirstTab" label="Name first of Tab"></design:attribute>
+    <design:attribute name ="NameOfSecondTab" label="Name second of Tab"></design:attribute>
+    <design:attribute name ="NameOfThirdTab" label="Name third of Tab"></design:attribute>
+
+
+</design:component>

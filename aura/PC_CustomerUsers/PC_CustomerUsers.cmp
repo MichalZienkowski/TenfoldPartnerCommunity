@@ -1,0 +1,85 @@
+<aura:component controller="PC_CustomerUsersController" implements="forceCommunity:availableForAllPageTypes, force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="matchCriteriaForUsersList" type="String" />
+    <aura:attribute name="currentCustomerUser" type="PC_CustomerUsersController.CustomerUser" />
+    <aura:attribute name="isEditUserModalOpen" type="boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+
+    <aura:handler event="c:PC_Table2CustomerUserReinviteEvent" action="{!c.reInviteUser}" />
+    <aura:handler event="c:PC_Table2CustomerUserSetAsAdminEvent" action="{!c.setUserAsAdmin}" />
+    <aura:handler event="c:PC_Table2CustomerUserChangePasswordEvent" action="{!c.changePassword}" />
+
+    <aura:registerEvent name="PC_Table2RefreshTable" type="c:PC_Table2RefreshTable" />
+
+    <c:PC_Table2
+            aura:id="customerUsersTable"
+            Title=""
+            SObjectName="Contact"
+            FieldNames="['Id', 'PC_IsAdmin__c', 'LastName', 'Email', 'PC_TenfoldUserStatus__c', 'Tenfold_User_Id__c', 'PC_TenfoldOrganizationId__c']"
+            FieldNamesToShowInTable="['PC_IsAdmin__c','LastName', 'Email']"
+            FieldLabels="['LastName:Name','PC_IsAdmin__c:admin', 'Email:Username']"
+            ReferenceFields="[]"
+            OverrideFieldType="['Email:STRING']"
+            ShowActionColumn="true"
+            ActionItems="['Change password', 'Re-invite', 'Set as admin']"
+            MatchCriteria= "{!v.matchCriteriaForUsersList}"
+            SortOrder="DESC"
+    />
+
+    <c:PC_Modal title="Change password" aura:id="changePassword">
+        <aura:set attribute="visible" value="false">
+        </aura:set>
+        <aura:set attribute="body">
+            <c:PC_CustomerUserChangePassword aura:id="changePasswordBody" />
+        </aura:set>
+    </c:PC_Modal>
+
+    <aura:if isTrue="{!v.isEditUserModalOpen}">
+        <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open ">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeEditUserModal}">
+                        <lightning:icon iconName="utility:close" size="small" variant="inverse"/>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="header99" class="slds-text-heading--medium">Edit user</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around--medium">
+                    <form class="slds-form--stacked">
+                        <div class="slds-form-element slds-is-required">
+                            <div class="slds-form-element__control">
+                                <ui:inputCheckbox aura:id="Admin" label="Admin"
+                                              labelClass="slds-form-element__label"
+                                              value="{!v.currentCustomerUser.isAdmin}"/>
+                                <ui:inputCheckbox aura:id="Blocked" label="Blocked"
+                                                  labelClass="slds-form-element__label"
+                                                  value="{!v.currentCustomerUser.disabled}"/>
+                                <ui:inputText aura:id="username" label="Name"
+                                              class="slds-input"
+                                              labelClass="slds-form-element__label"
+                                              value="{!v.currentCustomerUser.name}"
+                                              required="true"/>
+                                <ui:inputText aura:id="email" label="Email"
+                                              class="slds-input"
+                                              labelClass="slds-form-element__label"
+                                              value="{!v.currentCustomerUser.username}"
+                                              required="true"/>
+                                <ui:inputSecret  aura:id="password" label="Password"
+                                              class="slds-input"
+                                              labelClass="slds-form-element__label"
+                                              value=""/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button--neutral" onclick="{!c.closeEditUserModal}" >Cancel</button>
+                    <button class="slds-button slds-button--brand" onclick="{!c.saveEditUser}">Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </aura:if>
+
+</aura:component>

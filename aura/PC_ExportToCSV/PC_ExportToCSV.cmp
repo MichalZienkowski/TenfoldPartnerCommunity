@@ -1,0 +1,13 @@
+<aura:component description="PC_ExportToCSV">
+    <aura:attribute name="ButtonLabel" type="String" default="Export to CSV" description="Label of button" />
+    <aura:attribute name="FileName" type="String" description="Filename of CSV." />
+    <aura:attribute name="FieldLabels" type="String[]" required="true" description="Labels which will be in first line." />
+    <aura:attribute name="FieldNames" type="String[]" required="true" description="Fields, which be exported." />
+
+    <aura:handler event="c:PC_Table2GetAllRecordsResponseEvent" action="{!c.createCSV}" />
+    <aura:handler event="c:PC_Table2EditEvent" action="{!c.editCustomer}" />
+    <aura:registerEvent name="PC_Table2GetAllRecordsRequestEvent" type="c:PC_Table2GetAllRecordsRequestEvent" />
+
+    <lightning:button label="{!v.ButtonLabel}" onclick="{!c.sendRequestForData}"/>
+
+</aura:component>

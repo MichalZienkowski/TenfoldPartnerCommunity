@@ -1,0 +1,15 @@
+<aura:component controller="PC_LoginAsCustomerUserController"  implements="force:lightningQuickAction, force:hasRecordId">
+
+    <aura:attribute name="urlToLoginAsAdmin" type="String" default="" />
+    <aura:attribute name="currentAccount" type="Account" />
+    <aura:attribute name="recordId" type="String" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:PC_Table2LoginAsCustomerEvent" action="{!c.handleLoginAsCustomerUserEvent}" />
+
+	Please confirm that you want to login as {!v.currentAccount.Name} admin.
+    <br/>
+    <a href="{!v.urlToLoginAsAdmin}">
+        <lightning:button label="Login as admin" onclick="{! c.goToTenfold }" />
+    </a>
+</aura:component>

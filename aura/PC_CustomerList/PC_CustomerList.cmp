@@ -1,0 +1,109 @@
+<aura:component controller="PC_CustomerListController" implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="pageMainTitle" type="String" default="My Customers"/>
+    <aura:attribute name="pageTitle" type="String" default="Customer"/>
+    <aura:attribute name="sortDirection" type="string" />
+    <aura:attribute name="lastSortedColumn" type="string" default="asc" />
+
+
+    <aura:attribute name="isCustomerEditModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="modalTitle" type="String" default="New Customer"/>
+    <aura:attribute name="isInCreateMode" type="boolean" default="false"/>
+    <aura:attribute name="currentAccount" type="Account" />
+    <aura:attribute name="phoneList" type="List" default="['Loading, please wait...']" />
+    <aura:attribute name="crmList" type="List" default="['Loading, please wait...']" />
+    <aura:attribute name="planList" type="List" default="['Loading, please wait...']" />
+    <aura:attribute name="customerAdminName" type="String" default=""/>
+    <aura:attribute name="adminEmail" type="String" default=""/>
+    <aura:attribute name="phoneNumber" type="String" default=""/>
+    <aura:attribute name="invite" type="Boolean" default="true" />
+
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:PC_Table2EditRequestEvent" action="{!c.editCustomer}" />
+
+    <style>
+        .slds-page-header{
+            background : white;
+        }
+        .siteforceOneColumnLayout{
+            max-width: 100%;
+            margin: auto;
+            padding: auto;
+        }
+        .siteforceOneColumnLayout .row .ui-widget{
+            margin: auto;
+        }
+    </style>
+
+    <div class="slds-page-header">
+        <div class="slds-grid">
+            <div class="slds-col slds-has-flexi-truncate">
+                <div class="slds-media slds-no-space slds-grow">
+                    <div class="slds-media__figure">
+                      <span class="slds-icon_container slds-icon-standard-opportunity" title="{!v.pageTitle}">
+                          <lightning:icon iconName="standard:account"/>
+                      </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <nav>
+                            <ol class="slds-breadcrumb slds-line-height_reset">
+                                <li class="slds-breadcrumb__item">
+                                    <span>{!v.pageTitle}</span>
+                                </li>
+                            </ol>
+                        </nav>
+                        <h1 class="slds-page-header__title slds-p-right_x-small">
+                                {!v.pageMainTitle}
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-no-flex slds-grid slds-align-top slds-p-bottom_xx-small">
+                <div class="slds-button-group" role="group">
+                    <lightning:button label="New" onclick="{!c.newAccount}"/>
+
+                    <c:PC_ExportToCSV
+                            aura:id="PC_ExportToCSV"
+                            FileName="Customer report"
+                            FieldLabels="['Org ID','Customer Name','Created Date','Plan','Licenses Purchased','Total Users in CRM','CRM','Phone System']"
+                            FieldNames="['Callinize_DB_ID__c','Name','CreatedDate','Plan__c','Purchased_Users__c','Users_Potentially__c','CrmProvider__c','PC_PhoneSystem__c' ]"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <c:PC_Table2
+            Title=""
+            SObjectName="Account"
+            FieldNames="['Id', 'Name', 'CrmProvider__c', 'PC_PhoneSystem__c', 'PC_Active_Purchased_Frm__c', 'Users_Potentially__c', 'Plan__c', 'PC_Status__c',
+            'CreatedDate','Callinize_DB_ID__c', 'Purchased_Users__c', 'Description']"
+            FieldNamesToShowInTable="['Name', 'CrmProvider__c', 'PC_PhoneSystem__c', 'PC_Active_Purchased_Frm__c', 'Users_Potentially__c', 'Plan__c', 'PC_Status__c']"
+            FieldLabels="['CrmProvider__c:CRM', 'PC_Active_Purchased_Frm__c:Total Potential', 'PC_Status__c:Status']"
+            ReferenceFields="['Name']"
+            ShowActionColumn="true"
+            ActionItems="['Edit', 'Login as customer\'s admin']"
+            MatchCriteria="ownerId = :PC_Utils.getCurrentUser().Id"
+            SortOrder="DESC"
+    />
+
+    <c:PC_Modal title="Login as Customer User" aura:id="customerModal">
+        <aura:set attribute="visible" value="false">
+        </aura:set>
+        <aura:set attribute="body">
+            <c:PC_LoginAsCustomerUser aura:id="loginAsCustomerUserBody" />
+        </aura:set>
+    </c:PC_Modal>
+
+    <c:PC_Modal title="PC_CustomerEditForm" aura:id="customerEditModal">
+        <aura:set attribute="visible" value="false">
+        </aura:set>
+        <aura:set attribute="body">
+            <c:PC_CustomerEditForm
+                    aura:id="PC_CustomerEditForm"
+                    isRunningFromQuickAction="false"
+            />
+        </aura:set>
+    </c:PC_Modal>
+
+</aura:component>

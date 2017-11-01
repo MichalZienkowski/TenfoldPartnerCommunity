@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <authorizeUrl>https://dev-dashboard.tenfold.com/oauth/authorize</authorizeUrl>
+    <consumerKey>59c4f6011f9aa7d640a9a302</consumerKey>
+    <consumerSecret>AYp6ynh+3v9wQRj3Ygtq1w==</consumerSecret>
+    <executionUser>michal.zienkowski@britenet.com.pl2.int</executionUser>
+    <friendlyName>Tenfold</friendlyName>
+    <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
+    <providerType>OpenIdConnect</providerType>
+    <registrationHandler>BTN_GoogleLoginHandler</registrationHandler>
+    <sendAccessTokenInHeader>true</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>true</sendClientCredentialsInHeader>
+    <tokenUrl>https://api-development.tenfold.com/api/v1/oauth/token</tokenUrl>
+    <userInfoUrl>https://api-development.tenfold.com/api/v1/user/info</userInfoUrl>
+</AuthProvider>

@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="PC_Table2CustomerUserReinviteEvent">
+    <aura:attribute name="recordData" type="String" />
+</aura:event>

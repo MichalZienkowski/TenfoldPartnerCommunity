@@ -1,0 +1,42 @@
+<aura:component description="PC_CustomerUserForm" controller="PC_CustomerUsersController" implements="force:lightningQuickActionWithoutHeader" access="global" >
+
+    <aura:attribute name="userName" type="String"/>
+    <aura:attribute name="userEmail" type="String" />
+    <aura:attribute name="userPassword" type="String" />
+    <aura:attribute name="invite" type="Boolean" default="true" />
+<style>
+    .user-form{
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+    .cuf-content{
+        padding: 0;
+    }
+    .forceChatterBasePublisher :not(.PHONE) .cuf-content{
+        padding: 0;
+    }
+    .slds-p-around_medium, .slds-p-around--medium{
+        padding: 0;
+    }
+    .modal-body scrollable .slds-modal__content .slds-p-around--medium{
+        height: auto;
+    }
+</style>
+
+    <div class="modal-header slds-modal__header" >
+        <h2 class="title slds-text-heading--medium">Create user</h2>
+    </div>
+    <div class="user-form">
+        <ui:inputText aura:id="userName" label="Name" value="{!v.userName}"/>
+        <ui:inputText aura:id="userEmail"  label="Email" value="{!v.userEmail}"/>
+        <ui:inputSecret aura:id="userPassword" label="Password" value="{!v.userPassword}"/>
+        <ui:inputCheckbox aura:id="invite" label="Send invite" change="{!c.inviteCheck}" value="true" />
+    </div>
+
+    <br/>
+
+    <footer class="slds-modal__footer">
+        <lightning:button label="Cancel" onclick="{!c.closeModal}" variant="neutral"/>
+        <lightning:button label="Save" onclick="{!c.saveUser}" variant="brand"/>
+    </footer>
+</aura:component>

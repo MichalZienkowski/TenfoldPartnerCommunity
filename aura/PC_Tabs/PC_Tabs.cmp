@@ -1,0 +1,40 @@
+
+<aura:component controller="PC_TabsController" description="PC_Tabs" implements="forceCommunity:availableForAllPageTypes, force:hasRecordId, force:lightningQuickActionWithoutHeader" access="global">
+    <aura:attribute name="NameOfFirstTab" type="String" />
+    <aura:attribute name="NameOfSecondTab" type="String" />
+    <aura:attribute name="NameOfThirdTab" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="loadingInfo" type="String" access="private" default="Loading..."/>
+    <aura:attribute name="isCustomerUsersSyncing" type="boolean" default="true"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:registerEvent name="PC_ModalCloseEvent" type="c:PC_ModalCloseEvent" />
+
+<style>
+    .dangerZone{
+        font-weight: bold;
+        color: red !important;
+    }
+    .dangerZone a:link, .navigation-div a:visited{
+        font-weight: bold  !important;
+        color: red !important;
+    }
+</style>
+    <lightning:tabset>
+        <lightning:tab label="{!v.NameOfFirstTab}">
+            <force:recordView recordId="{!v.recordId}" type="FULL"/>
+        </lightning:tab>
+        <lightning:tab id="{!v.NameOfSecondTab}" label="{!v.NameOfSecondTab+'Syncing'}" onactive="{!c.handleActive}">
+            <aura:set attribute="label">
+                {!v.NameOfSecondTab}
+                <aura:if isTrue="{! v.isCustomerUsersSyncing}">
+                    <lightning:icon iconName="utility:sync" size="xx-small" title="Sync with Tenfold"/>
+                </aura:if>
+            </aura:set>
+                {!v.loadingInfo}
+        </lightning:tab>
+        <lightning:tab class="dangerZone" id="{!v.NameOfThirdTab}" label="{!v.NameOfThirdTab}" onactive="{!c.handleActive}">
+            {!v.loadingInfo}
+        </lightning:tab>
+    </lightning:tabset>
+</aura:component>

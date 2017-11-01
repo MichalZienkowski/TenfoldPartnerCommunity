@@ -1,0 +1,114 @@
+<aura:component controller="PC_CustomerListController" implements="forceCommunity:availableForAllPageTypes, force:hasRecordId, force:lightningQuickActionWithoutHeader" access="global">
+
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="modalTitle" type="String" default="Edit Customer"/>
+    <aura:attribute name="isRunningFromQuickAction" type="boolean" default="true"/>
+    <aura:attribute name="isInCreateMode" type="boolean" default="false"/>
+    <aura:attribute name="currentAccount" type="Account" />
+    <aura:attribute name="phoneList" type="List" default="['Loading, please wait...']" />
+    <aura:attribute name="crmList" type="List" default="['Loading, please wait...']" />
+    <aura:attribute name="planList" type="List" default="['Loading, please wait...']" />
+    <aura:attribute name="languageList" type="List" default="['Loading, please wait...']" />
+
+    <aura:attribute name="customerAdminName" type="String" default=""/>
+    <aura:attribute name="adminEmail" type="String" default=""/>
+    <aura:attribute name="phoneNumber" type="String" default=""/>
+    <aura:attribute name="invite" type="Boolean" default="true" />
+
+    <aura:method name="startUpForm" action="{!c.startUpForm}" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:registerEvent name="PC_ModalCloseEvent" type="c:PC_ModalCloseEvent" />
+    <aura:attribute name="fieldsValidity" type="Object[]" />
+
+
+        <style>
+            .customer-form{
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+            .cuf-content{
+                padding: 0;
+            }
+            .forceChatterBasePublisher :not(.PHONE) .cuf-content{
+                padding: 0;
+            }
+            .slds-p-around_medium, .slds-p-around--medium{
+                padding: 0;
+            }
+            .modal-body scrollable .slds-modal__content .slds-p-around--medium{
+                height: auto;
+            }
+        </style>
+
+    <aura:if isTrue="{!v.isRunningFromQuickAction}">
+    <div class="modal-header slds-modal__header" >
+        <h2 class="title slds-text-heading--medium">{!v.modalTitle}</h2>
+    </div>
+
+    </aura:if>
+    <div class="customer-form">
+            <aura:if isTrue="{!v.isInCreateMode}">
+                <lightning:input aura:id="adminName" label="Customer Admin Name"  name="adminName" value="{!v.currentAccount.PC_CustomerAdminName__c}" required="true" />
+                <lightning:input aura:id="email" type="email" label="Email"  name="Email" value="{!v.currentAccount.PC_CustomerAdminEmail__c}" required="true" />
+                <lightning:input aura:id="phoneNbr" type="tel" label="Phone Number"  name="phoneNbr" value="{!v.currentAccount.PC_CustomerAdminPhoneNumber__c}" placeholder="(999) 999-9999" />
+            </aura:if>
+            <lightning:input aura:id="companyName" type="text" label="Company Name"  name="companyName" value="{!v.currentAccount.Name}" required="true" validity="{!v.fieldsValidity.Name}" />
+
+            <lightning:select aura:id="crmProvider" name="crmProvider" label="CRM Provider" onchange="{!c.onCRMproviderChange}" required="true" value="{!v.currentAccount.CrmProvider__c}">
+                <aura:iteration items="{!v.crmList}" var="item">
+                    <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                </aura:iteration>
+            </lightning:select>
+
+            <lightning:select aura:id="phoneSystem" name="phoneSystem" label="Phone System" onchange="{!c.onPhoneSystemChange}" required="true" value="{!v.currentAccount.PC_PhoneSystem__c}">
+                <aura:iteration items="{!v.phoneList}" var="item">
+                    <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                </aura:iteration>
+            </lightning:select>
+
+            <lightning:select aura:id="plan" name="plan" label="Plan" onchange="{!c.onPlanChange}" required="true" value="{!v.currentAccount.Plan__c}">
+                <aura:iteration items="{!v.planList}" var="item">
+                    <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+                </aura:iteration>
+            </lightning:select>
+
+        <lightning:select aura:id="language" name="language" label="Default Customer language" onchange="{!c.onLanguageChange}" required="false" value="{!v.currentAccount.PC_LanguageCode__c}">
+            <aura:iteration items="{!v.languageList}" var="item">
+                <option text="{!item.label}" value="{!item.value}" selected="{!item.selected}"/>
+            </aura:iteration>
+        </lightning:select>
+
+            <lightning:input aura:id="purchasedUsers" label="Purchased Users"  name="purchasedUsers" value="{!v.currentAccount.Purchased_Users__c}" pattern="[0-9]*" />
+
+            <lightning:textarea aura:id="notes" name="notes" label="Notes" value="{!v.currentAccount.Description}"/>
+
+            <aura:if isTrue="{!v.isInCreateMode}">
+                <lightning:input aura:id="invite" type="checkbox" label="Send invite" name="invite" onchange="{!c.inviteCheck}" checked="true"/>
+            </aura:if>
+    </div>
+    <br/>
+
+    <aura:if isTrue="{!v.isRunningFromQuickAction}">
+        <footer class="slds-modal__footer">
+            <lightning:button label="Cancel" onclick="{!c.closeModalFromQucikAction}" variant="neutral"/>
+            <lightning:button label="Save" onclick="{!c.updateAccountFromQuickAction}" variant="brand" type="submit"/>
+        </footer>
+    </aura:if>
+
+    <aura:if isTrue="{!v.isInCreateMode}">
+        <footer class="slds-modal__footer">
+            <lightning:button label="Cancel" onclick="{!c.closeModal}" variant="neutral"/>
+            <lightning:button label="Save" onclick="{!c.saveNewAccount}" variant="brand" type="submit"/>
+        </footer>
+    </aura:if>
+
+
+    <aura:if isTrue="{!and(!v.isRunningFromQuickAction, !v.isInCreateMode)}">
+        <footer class="slds-modal__footer">
+            <lightning:button label="Cancel" onclick="{!c.closeModal}" variant="neutral"/>
+            <lightning:button label="Save" onclick="{!c.updateAccount}" variant="brand" type="submit"/>
+        </footer>
+    </aura:if>
+
+</aura:component>

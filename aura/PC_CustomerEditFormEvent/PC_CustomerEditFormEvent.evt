@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="PC_CustomerEditFormEvent">
+    <aura:attribute name="recordData" type="String" />
+    <aura:attribute name="isRunningFromQuickAction" type="Boolean" />
+</aura:event>

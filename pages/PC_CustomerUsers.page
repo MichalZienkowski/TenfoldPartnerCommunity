@@ -1,0 +1,124 @@
+<apex:page id="PC_CustomerUsers" showHeader="false" standardStylesheets="false" sidebar="false" docType="html-5.0"
+           standardController="Account" extensions="PC_CustomerUsersController" applyBodyTag="False"
+           applyHtmlTag="False">
+    <head>
+        <apex:slds/>
+    </head>
+    <body class="slds-scope">
+        <link href="{!URLFOR($Resource.PartnerCommunity, 'css/font-awesome.min.css')}" rel="stylesheet"/>
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            <thead>
+            <tr class="slds-text-title_caps">
+                <th scope="col">
+                    <div class="slds-truncate slds-align_absolute-center" title="Admin">Admin</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-align_absolute-center" title="Blocked">Blocked</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-align_absolute-center" title="Name">Name</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-align_absolute-center" title="Username">Username</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-align_absolute-center" title="Extensions">Extensions</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-align_absolute-center" title="Inbound">Inbound</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-align_absolute-center" title="Team">Team</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate slds-align_absolute-center" title="Actions">Actions</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <apex:repeat value="{!customerUsers.users}" var="customerUser" id="customerUsers">
+                <tr>
+
+                    <td data-label="Admin">
+                        <div class="slds-truncate slds-align_absolute-center" title="Admin"><span
+                                class='{! IF(customerUser.isAdmin,"fa fa-star", "fa fa-star-o")}'></span></div>
+                    </td>
+                    <td data-label="Blocked">
+                        <div class="slds-truncate slds-align_absolute-center" title="Blocked"><span
+                                class='{! IF(customerUser.disabled,"fa fa-lock", "fa fa-unlock")}'></span></div>
+                    </td>
+                    <td data-label="Name">
+                        <div class="slds-truncate slds-align_absolute-center"
+                             title="{!customerUser.name}">{!customerUser.name}</div>
+                    </td>
+                    <td data-label="Username">
+                        <div class="slds-truncate slds-align_absolute-center"
+                             title="{!customerUser.username}">{!customerUser.username}</div>
+                    </td>
+                    <td data-label="Extensions">
+                        <div class="slds-truncate slds-align_absolute-center"
+                             title="{!customerUser.extensions}">{!customerUser.extensions}</div>
+                    </td>
+                    <td data-label="Inbound">
+                        <div class="slds-truncate slds-align_absolute-center"
+                             title="{!customerUser.inboundEnabled}">{!customerUser.inboundEnabled}</div>
+                    </td>
+                    <td data-label="Team">
+                        <div class="slds-truncate slds-align_absolute-center"
+                             title="{!customerUser.CustomerOrganization}">{!customerUser.CustomerOrganization}</div>
+                    </td>
+                    <td data-label="Actions">
+                        <div class="slds-button-groupslds-truncate slds-align_absolute-center" role="group">
+                            <button class="slds-button slds-button_neutral" onclick="openModal();">Edit</button>
+                            <button class="slds-button slds-button_neutral">Re-invite</button>
+                            <button class="slds-button slds-button_neutral">Remove</button>
+                        </div>
+                    </td>
+                </tr>
+            </apex:repeat>
+            </tbody>
+        </table>
+
+
+        <apex:outputPanel id="Modal">
+            <div id="Modal" role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close">
+                            <svg class="slds-button__icon slds-button__icon--large" aria-hidden="true">
+                                <!-- <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>-->
+                            </svg>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="header43" class="slds-text-heading--medium">Modal Header</h2>
+                    </div>
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <p>Sit nulla est ex deserunt exercitation anim occaecat. Nostrud ullamco deserunt aute id consequat veniam incididunt duis in sint irure nisi. Mollit officia cillum Lorem ullamco minim nostrud elit officia tempor esse quis. Cillum sunt ad dolore
+                            quis aute consequat ipsum magna exercitation reprehenderit magna. Tempor cupidatat consequat elit dolor adipisicing.
+                        </p>
+                        <p>Dolor eiusmod sunt ex incididunt cillum quis nostrud velit duis sit officia. Lorem aliqua enim laboris do dolor eiusmod officia. Mollit incididunt nisi consectetur esse laborum eiusmod pariatur proident. Eiusmod et adipisicing culpa deserunt nostrud
+                            ad veniam nulla aute est. Labore esse esse cupidatat amet velit id elit consequat minim ullamco mollit enim excepteur ea.
+                        </p>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <button class="slds-button slds-button--neutral" onclick="closeModal()">Cancel</button>
+                        <button class="slds-button slds-button--brand">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop"></div>
+        </apex:outputPanel>
+
+
+
+
+        <script>
+                  function openModal(){
+         alert('togglebutton');
+         var d = document.getElementById("Modal");
+d.className += " slds-fade-in-open";
+d.className += " slds-backdrop--open";
+      }
+        </script>
+    </body>
+</apex:page>

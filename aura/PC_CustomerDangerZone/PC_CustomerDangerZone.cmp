@@ -1,0 +1,43 @@
+<aura:component controller="PC_CustomerDangerZoneController" implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="suspendCustomerTitle" access="private" type="String" default="Suspend Customer" />
+    <aura:attribute name="removeCustomerTitle" access="private" type="String" default="Remove Customer" />
+    <aura:attribute name="cancelButton" access="private" type="String" default="Cancel" />
+    <aura:attribute name="suspendButton" access="private" type="String" default="Suspend" />
+    <aura:attribute name="removeButton" access="private" type="String" default="Remove" />
+
+    <ui:message title="{!v.suspendCustomerTitle}" severity="warning">
+        Click below if you want suspend Customer.<br/>
+        <lightning:button label="Suspend" iconName="utility:pause" iconPosition="left" onclick="{! c.suspendCustomerConfirm }" />
+    </ui:message>
+    <ui:message title="Remove Customer" severity="error">
+        Click below if you want permanently remove Customer.<br/>
+        <lightning:button label="Remove" iconName="utility:delete" iconPosition="left" onclick="{! c.removeCustomerConfirm }" />
+    </ui:message>
+
+
+    <c:PC_Modal title="{!v.suspendCustomerTitle}" aura:id="suspendCustomer">
+        <aura:set attribute="visible" value="false">
+        </aura:set>
+        <aura:set attribute="body">
+           Please confirm that you want to suspend current Customer.
+        </aura:set>
+        <aura:set attribute="footer">
+            <lightning:button label="{!v.cancelButton}" onclick="{! c.closeSuspendModal }" />
+            <lightning:button label="{!v.suspendButton}" variant="brand" onclick="{! c.callSuspendCustomer }" />
+        </aura:set>
+    </c:PC_Modal>
+
+    <c:PC_Modal title="{!v.removeCustomerTitle}" aura:id="removeCustomer">
+        <aura:set attribute="visible" value="false">
+        </aura:set>
+        <aura:set attribute="body">
+            Please confirm that you want to remove current Customer.
+        </aura:set>
+        <aura:set attribute="footer">
+            <lightning:button label="{!v.cancelButton}" onclick="{! c.closeRemoveModal }" />
+            <lightning:button label="{!v.removeButton}" variant="destructive" onclick="{! c.callRemoveCustomer }" />
+        </aura:set>
+    </c:PC_Modal>
+
+</aura:component>

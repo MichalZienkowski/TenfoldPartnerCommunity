@@ -1,0 +1,25 @@
+<aura:component controller="PC_LoginController" implements="forceCommunity:availableForAllPageTypes" access="global">
+    <aura:attribute name="urlToTenfoldSSO" type="String" default="" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <style>
+        .main-form {
+          position: relative;
+          z-index: 1;
+          background: #FFFFFF;
+          max-width: 360px;
+          margin: 0 auto 100px;
+          padding: 45px;
+          text-align: center;
+          box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+    </style>
+    <div class="main-form">
+            <img src="{!$Resource.PartnerCommunity + '/images/logotenfold1.png'}"/>
+            <br/>
+            <br/>
+            <a href="{!v.urlToTenfoldSSO}">
+                <button  class="slds-button slds-button_neutral" style="width:100%">Login</button>
+            </a>
+    </div>
+</aura:component>

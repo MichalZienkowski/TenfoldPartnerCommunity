@@ -60,7 +60,7 @@ public class PC_Table2Controller {
             try {
                 String sobject_internal_name = parseSObjectName(namespace, sobject_name);
                 if(!Schema.getGlobalDescribe().get(sobject_internal_name).getDescribe().isAccessible()){
-                    throw new DynamicTableController.DynamicTableException('User doesn\'t have access to object: ' + Schema.getGlobalDescribe().get(sobject_internal_name).getDescribe().getName() + '.');
+                    throw new PC_Table2Controller.DynamicTableException('User doesn\'t have access to object: ' + Schema.getGlobalDescribe().get(sobject_internal_name).getDescribe().getName() + '.');
                 }
                 parseFieldsString(namespace, sobject_internal_name, field_names);
                 setColumnsLabels(field_labels);
@@ -74,7 +74,7 @@ public class PC_Table2Controller {
         }
 
         private String retrieveNamespace(){
-            String class_name = DynamicTableController.class.getName();
+            String class_name = PC_Table2Controller.class.getName();
             if(class_name.countMatches('.') == 1){
                 return class_name.substringBefore('.') + '__';
             }
@@ -223,7 +223,7 @@ public class PC_Table2Controller {
                 throw new DynamicTableException('Unknown field: ' + field_name + '.');
             }
             if(!describe_field_result.isAccessible()){
-                throw new DynamicTableController.DynamicTableException('User doesn\'t have access to field: ' + describe_field_result.getName() + '.');
+                throw new PC_Table2Controller.DynamicTableException('User doesn\'t have access to field: ' + describe_field_result.getName() + '.');
             }
             if(field_api_name != null){
                 field_api_name += '.' + describe_field_result.getName();

@@ -6,10 +6,29 @@
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
     <aura:handler event="c:PC_Table2LoginAsCustomerEvent" action="{!c.handleLoginAsCustomerUserEvent}" />
-
-	Please confirm that you want to login as {!v.currentAccount.Name} admin.
+    <style>
+        .slds-button{
+            display: none;
+        }
+        .slds-button__icon{
+            display: none;
+        }
+        .slds-modal__close{
+            display: none;
+        }
+        .modal-header{
+            display: none;
+        }
+        .modal-body{
+            display: none;
+        }
+        .modal-footer{
+            display: none;
+        }
+    </style>
+	<!--Please confirm that you want to login as {!v.currentAccount.Name} admin.
     <br/>
     <a href="{!v.urlToLoginAsAdmin}">
         <lightning:button label="Login as admin" onclick="{! c.goToTenfold }" />
-    </a>
+    </a>-->
 </aura:component>
